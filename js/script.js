@@ -2,6 +2,8 @@
 const overview = document.querySelector(".overview");
 const username = "Carbur3";
 const repoList = document.querySelector(".repo-list");
+const allReposContainer = document.querySelector(".repos");
+const repoData = document.querySelector(".repo-data");
 
 const gitUserInfo = async function () {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
@@ -19,7 +21,8 @@ const displayUserInfo = function (data) {
         <img alt="user avatar" src=${data.avatar_url} />
     </figure>
     <div>
-        <p><stront>Name:</stront> ${data.name}</p>
+        <p><strong>Username:</strong> ${data.name}</p>
+        <p><strong>Name:</strong> ${data.name}</p>
         <p><strong>Bio:</strong> ${data.bio}</p>
         <p><strong>Location:</strong> ${data.location}</p>
         <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
@@ -47,5 +50,19 @@ const displayRepos = function (repos) {
        repoItem.innerHTML = `<h3>${repo.name}</h3>`;
        repoList.append(repoItem);
     }
-    
+
 };
+
+repoList.addEventListener("click", function (e) {
+    if (e.target.matches("h3")) {
+        const repoName = e.target.innerText;
+        getRepoInfo(repoName);
+        }
+});
+
+const getRepoInfo = async function (repoName) {
+    const fetchInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+    const repoInfo = await fetchInfo.json();
+    console.log(repoInfo);
+
+}
